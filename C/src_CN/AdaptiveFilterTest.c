@@ -29,7 +29,7 @@ static void PrintPassFailStatus();
 
 /* Adaptive Filter parameter/state information ********************************/
 
-/* Primary Test Parameters */
+/* 主要的测试参数 */
 #define STEPSIZE (0.3) /* 自适应滤波器步长 */
 #define REGULARIZATION (1.0E-10) /* 自适应滤波器正则化常数 */
 #define NUM_TAPS (30) /* 自适应滤波器抽头数量 */
@@ -64,9 +64,8 @@ static AfData Adata = {
  *
  * @returns       none
  *
- * @note          Runs adaptive filter in a system with a fixed test filter
- *  and tracks performance metrics (misalignment and squared error) according
- *  to expectations defined in the parameters listed above.
+ * @note          在具有固定测试过滤器的系统中运行自适应过滤器，
+ *                并根据上面列出的参数中定义的期望跟踪性能指标(错位和平方误差)。
  *
  * @warning       none
  */
@@ -76,15 +75,15 @@ void AdaptiveFilterTestRun() {
     
     srand(RAND_SEED); /* set random seed for repeatability */
 
-	InitWeights(); /* initialize fixed test filter */
+	InitWeights(); /* 初始化固定的测试滤波器 */
 
 	for ( i = 0; i < ITERATIONS; i++) {
-        /* Generate a random input sample on the interval (-1,1) */
+        /* 在区间(-1,1)上生成一个随机输入样本 */
 		input = ( 2 * (double)rand() / (double)RAND_MAX ) - 1;
-		desired = Filter(input); /* run the fixed test filter */
+		desired = Filter(input); /* 运行固定的测试过滤器 */
 		output = AdaptiveFilterRun(input, desired, &Adata);
         
-        /* Compute performance metrics */
+        /* 计算性能指标 */
 		squaredErrorDb = 10 * log10( DB_EPSILON + (Adata.Error) * (Adata.Error) );
         misalignmentDb = 10 * log10( DB_EPSILON + ComputeMisalignment() );
         
@@ -101,14 +100,14 @@ void AdaptiveFilterTestRun() {
 *
 * @returns       none
 *
-* @note          initializes the fixed test filter weights using random numbers
+* @note          使用随机数初始化固定的测试过滤器权重
 * 
 * @warning       none
 *******************************************************************************/
 static void InitWeights() {
 	unsigned int i;
 	for ( i = 0; i < NUM_TAPS; i++) {
-        /* initialize using random numbers on the interval (-1,1) */
+        /* 在区间(-1,1)上使用随机数初始化 */
 		testWeights[i] = ( 2 * (double)rand() / (double)RAND_MAX ) - 1;
 	}
 }
@@ -149,9 +148,8 @@ static double Filter(double input) {
 *
 * @returns       滤波器权数偏离
 * 
-* @note          Computes filter weight misalignment between test filter and
-*  the adaptive filter, normalized by the squared L2-norm of the test filter:
-*  (||Wtest - Wadaptive||^2) / (||Wtest||^2)
+* @note         计算测试滤波器和自适应滤波器之间的滤波器权重不对中，
+                由测试滤波器的l2范数的平方归一化:(||Wtest - Wadaptive||^2) / (||Wtest||^2)
 * 
 * @warning       none
 *******************************************************************************/
@@ -161,9 +159,9 @@ static double ComputeMisalignment() {
     double diffSqrdNorm = 0.0, testSqrdNorm = 0.0;
     
     for ( i = 0; i < NUM_TAPS; i++) {
-        difference = testWeights[i] - Adata.pWeights[i]; /* weight difference */
+        difference = testWeights[i] - Adata.pWeights[i]; /* 权重差 */
         
-        /* accumulate squared terms */
+        /* 累计平方项 */
         diffSqrdNorm += difference * difference;
         testSqrdNorm += testWeights[i] * testWeights[i];
     }
