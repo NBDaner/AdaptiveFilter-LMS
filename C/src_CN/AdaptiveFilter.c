@@ -49,7 +49,7 @@ double AdaptiveFilterRun(double input, double desired, AfData *pData) {
  * @param[in]     error error signal sample (desired - output)
  * @param[in,out] pData  pointer to AdaptiveFilter parameter/state struct
  *
- * @returns       adaptive filter output (estimate of desired signal)
+ * @returns       自适应滤波器输出(估计所需信号)
  *
  * @note          Runs the normalized least mean square adaptive filter and
  *  computes a new output.

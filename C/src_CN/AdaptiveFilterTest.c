@@ -79,8 +79,8 @@ void AdaptiveFilterTestRun() {
 
 	for ( i = 0; i < ITERATIONS; i++) {
         /* 在区间(-1,1)上生成一个随机输入样本 */
-		input = ( 2 * (double)rand() / (double)RAND_MAX ) - 1;
-		desired = Filter(input); /* 运行固定的测试过滤器 */
+		input = ( 2 * (double)rand() / (double)RAND_MAX ) - 1;   //产生一个在区间（-1，1） 那么问题就是输入的数据是否需要归一化
+		desired = Filter(input); /* 运行固定的测试过滤器 */   
 		output = AdaptiveFilterRun(input, desired, &Adata);
         
         /* 计算性能指标 */
